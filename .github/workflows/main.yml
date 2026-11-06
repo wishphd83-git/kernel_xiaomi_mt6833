@@ -1,6 +1,5 @@
 name: Integrate SUSFS Patches
-run: |
-cd $GITHUB_WORKSPACE/kernel-source
+run: |cd $GITHUB_WORKSPACE/kernel-source
 git clone -b kernel-4.14 https://gitlab.com susfs_src
 cp ./susfs_src/kernel_patches/fs/* ./fs/
 cp ./susfs_src/kernel_patches/include/linux/* ./include/linux/
