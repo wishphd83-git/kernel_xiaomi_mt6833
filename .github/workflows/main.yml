@@ -1,0 +1,22 @@
+    - name: Integrate SUSFS Patches
+      run: |
+        cd $GITHUB_WORKSPACE/kernel-source # Sesuaikan dengan nama folder source kernel Anda
+        
+        # Clone official repository susfs4ksu khusus branch kernel-4.14
+        git clone -b kernel-4.14 https://gitlab.com susfs_src
+        
+        # Salin file filesystem & header SUSFS ke source kernel
+        cp ./susfs_src/kernel_patches/fs/* ./fs/
+        cp ./susfs_src/kernel_patches/include/linux/* ./include/linux/
+        
+        # Terapkan patch SUSFS ke core kernel
+        patch -p1 < ./susfs_src/kernel_patches/50_add_susfs_in_kernel-4.14.patch || true
+        
+        # Jika menggunakan ReSukiSU/KernelSU, salin patch integrasinya
+        cp ./susfs_src/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU/ || true
+        cd ./KernelSU
+        patch -p1 < 10_enable_susfs_for_ksu.patch || true
+        cd ..
+        
+        # Bersihkan folder clone temporary
+        rm -rf susfs_src
